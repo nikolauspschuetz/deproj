@@ -23,7 +23,9 @@ def main() -> int:
         # elif (args.output == Output.PNG.value) or True:
         #     to_output = card.to_png
         else:
-            raise ValueError(f"output {args.output} not configured")  # if not in Output enum, argparse would fail
+            raise ValueError(
+                f"output {args.output} not configured"
+            )  # if not in Output enum, argparse would fail
         out = to_output()
         sys.stdout.write(out)
         return 0

@@ -12,7 +12,7 @@ class DocsAPIModel(APIModelBase):
 
 class ApiDocsModel(MLBStatsAPIModel):
 
-    _fmt_rel_path = r'{name}-{api_version}.json'
+    _fmt_rel_path = r"{name}-{api_version}.json"
 
     # authorizations: fields.Dict()
     # info: fields.Int()

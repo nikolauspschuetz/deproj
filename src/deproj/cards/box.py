@@ -7,7 +7,6 @@ from deproj.utils import LogMixin, get_output_filepath
 
 
 class Box(LogMixin):
-
     def __init__(self, kind: str, side: str, *vals):
         self.kind = kind
         self.side = side
@@ -25,7 +24,7 @@ class Box(LogMixin):
         if self.kind == "basic":
             return {v.get("name") or i: v["value"] for i, v in enumerate(self.vals)}
         elif self.kind == "frame":
-            return self.to_df().to_dict(orient='list')
+            return self.to_df().to_dict(orient="list")
         else:
             raise NotImplementedError(f"to_dict is not defined for kind {self.kind}")
 

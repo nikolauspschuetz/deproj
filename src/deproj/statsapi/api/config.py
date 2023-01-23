@@ -8,7 +8,6 @@ from deproj.utils.stats_api_object import configure_api
 
 
 class ConfigModel(MLBStatsAPIEndpointModel):
-
     @configure_api
     def awards(self, **kwargs):
         return self.get_api_file_object(**kwargs)
@@ -154,41 +153,45 @@ class ConfigModel(MLBStatsAPIEndpointModel):
         return self.get_api_file_object(**kwargs)
 
     @property
-    def _methods(self): return {m.__name__: m for m in (
-        self.awards,
-        self.baseballStats,
-        self.eventTypes,
-        self.fielderDetailTypes,
-        self.gameStatus,
-        self.gameTypes,
-        self.gamedayTypes,
-        self.groupByTypes,
-        self.hitTrajectories,
-        self.jobTypes,
-        self.languages,
-        self.leagueLeaderTypes,
-        self.logicalEvents,
-        self.metrics,
-        self.pitchCodes,
-        self.pitchTypes,
-        self.platforms,
-        self.playerStatusCodes,
-        self.positions,
-        self.reviewReasons,
-        self.rosterTypes,
-        self.runnerDetailTypes,
-        self.scheduleEventTypes,
-        self.sitCodes,
-        self.sky,
-        self.aggregateSortEnum,
-        self.standingsTypes,
-        self.statFields,
-        self.statGroups,
-        self.statTypes,
-        self.statSearchConfig,
-        self.statSearchGroupByTypes,
-        self.statSearchParams,
-        self.statSearchStats,
-        self.transactionTypes,
-        self.windDirection,
-    )}
+    def _methods(self):
+        return {
+            m.__name__: m
+            for m in (
+                self.awards,
+                self.baseballStats,
+                self.eventTypes,
+                self.fielderDetailTypes,
+                self.gameStatus,
+                self.gameTypes,
+                self.gamedayTypes,
+                self.groupByTypes,
+                self.hitTrajectories,
+                self.jobTypes,
+                self.languages,
+                self.leagueLeaderTypes,
+                self.logicalEvents,
+                self.metrics,
+                self.pitchCodes,
+                self.pitchTypes,
+                self.platforms,
+                self.playerStatusCodes,
+                self.positions,
+                self.reviewReasons,
+                self.rosterTypes,
+                self.runnerDetailTypes,
+                self.scheduleEventTypes,
+                self.sitCodes,
+                self.sky,
+                self.aggregateSortEnum,
+                self.standingsTypes,
+                self.statFields,
+                self.statGroups,
+                self.statTypes,
+                self.statSearchConfig,
+                self.statSearchGroupByTypes,
+                self.statSearchParams,
+                self.statSearchStats,
+                self.transactionTypes,
+                self.windDirection,
+            )
+        }

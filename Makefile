@@ -100,3 +100,6 @@ docker-build:
 
 docker-build-test:
 	BUILD_TARGET=test REPOSITORY_NAME=deproj-test ./docker/build.sh $(VERSION)
+
+black:
+	black setup.py src tests

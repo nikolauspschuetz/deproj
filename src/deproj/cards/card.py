@@ -8,8 +8,15 @@ from deproj.utils import get_output_filepath, JSON_INDENT, to_short, Output
 
 
 class Card(abc.ABC):
-
-    def __init__(self, brand: str, year: int, person_id: int, *boxes: Box, name_slug: str, images: List[dict]):
+    def __init__(
+        self,
+        brand: str,
+        year: int,
+        person_id: int,
+        *boxes: Box,
+        name_slug: str,
+        images: List[dict],
+    ):
         self.brand = brand
         self.year = year
         self.person_id = person_id
@@ -23,19 +30,22 @@ class Card(abc.ABC):
     def to_console(self, *, output: Output = Output.JSON) -> str:
         """return a json representation of the card"""
         if output == Output.JSON:
-            return json.dumps({
-                "brand": self.brand,
-                "year": self.year,
-                "person_id": self.person_id,
-                "boxes": self.to_list()
-            }, indent=JSON_INDENT)
+            return json.dumps(
+                {
+                    "brand": self.brand,
+                    "year": self.year,
+                    "person_id": self.person_id,
+                    "boxes": self.to_list(),
+                },
+                indent=JSON_INDENT,
+            )
         elif output == Output.CSV:
-            return "\n".join([
-                "\n".join([
-                   f"csv {i}:",
-                    box.to_csv()
-                ]) for i, box in enumerate(self.boxes)
-            ])
+            return "\n".join(
+                [
+                    "\n".join([f"csv {i}:", box.to_csv()])
+                    for i, box in enumerate(self.boxes)
+                ]
+            )
         # elif output == Output.PNG:  # todo
         #     self.to_png()
         else:
@@ -59,7 +69,10 @@ class Card(abc.ABC):
 
     def write_csvs(self, *, short: bool = True) -> str:
         """write a json file for the card and return the filepath"""
-        filepaths = [box.write_csv(self.brand, self.year, self.name_slug, i) for i, box in enumerate(self.boxes)]
+        filepaths = [
+            box.write_csv(self.brand, self.year, self.name_slug, i)
+            for i, box in enumerate(self.boxes)
+        ]
         if short:
             filepaths = [to_short(f) for f in filepaths]
         return " ".join(filepaths)

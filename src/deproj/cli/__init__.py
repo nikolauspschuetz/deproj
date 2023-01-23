@@ -5,5 +5,5 @@ from .cli import (
     DEFAULT_PITCHER,
     DEFAULT_PERSON_ID,
     DEFAULT_CONSOLE_OUTPUT,
-    parse_args
+    parse_args,
 )

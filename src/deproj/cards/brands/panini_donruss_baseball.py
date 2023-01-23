@@ -5,10 +5,11 @@ from deproj.cards.box import Box
 
 
 class PaniniDonrussBaseball(Card):
-
-    def __init__(self, year: int, person_id: int, *boxes: Box, name_slug: str, images: List[dict]):
+    def __init__(
+        self, year: int, person_id: int, *boxes: Box, name_slug: str, images: List[dict]
+    ):
         super(PaniniDonrussBaseball, self).__init__(
-            'panini-donruss-baseball',
+            "panini-donruss-baseball",
             year,
             person_id,
             *boxes,

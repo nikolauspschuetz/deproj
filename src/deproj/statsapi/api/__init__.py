@@ -23,26 +23,29 @@ from .stats import StatsModel
 from .streaks import StreaksModel
 from .team import TeamModel
 
-__ALL_MODELS__ = {m.get_name(): m for m in [
-    AwardsModel,
-    BroadcastModel,
-    ConferenceModel,
-    ConfigModel,
-    DivisionModel,
-    DraftModel,
-    GameModel,
-    GamepaceModel,
-    HighLowModel,
-    HomeRunDerbyModel,
-    JobModel,
-    LeagueModel,
-    MilestonesModel,
-    PersonModel,
-    ScheduleModel,
-    SeasonModel,
-    SportsModel,
-    StandingsModel,
-    StatsModel,
-    StreaksModel,
-    TeamModel
-]}
+__ALL_MODELS__ = {
+    m.get_name(): m
+    for m in [
+        AwardsModel,
+        BroadcastModel,
+        ConferenceModel,
+        ConfigModel,
+        DivisionModel,
+        DraftModel,
+        GameModel,
+        GamepaceModel,
+        HighLowModel,
+        HomeRunDerbyModel,
+        JobModel,
+        LeagueModel,
+        MilestonesModel,
+        PersonModel,
+        ScheduleModel,
+        SeasonModel,
+        SportsModel,
+        StandingsModel,
+        StatsModel,
+        StreaksModel,
+        TeamModel,
+    ]
+}

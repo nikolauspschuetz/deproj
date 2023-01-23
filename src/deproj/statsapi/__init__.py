@@ -23,7 +23,7 @@ from .api import (
     StandingsModel,
     StatsModel,
     StreaksModel,
-    TeamModel
+    TeamModel,
 )
 
 

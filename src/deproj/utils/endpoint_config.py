@@ -15,7 +15,7 @@ class EndpointConfig(object):
         if cls._instance is None:
             cls._instance = super(EndpointConfig, cls).__new__(cls)
             # Put any initialization here.
-            with open(f"{CONFIGS_PATH}/statsapi/endpoint-model.yml", 'r') as f:
+            with open(f"{CONFIGS_PATH}/statsapi/endpoint-model.yml", "r") as f:
                 cls._instance.config = yaml.safe_load(f)
 
         return cls._instance

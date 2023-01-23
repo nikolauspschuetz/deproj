@@ -15,20 +15,22 @@ class MLBStatsAPIModel(Model):
     src_url: fields.Str()
     swaggerVersion: fields.Str()
 
-    _fmt_rel_path = 'stats-api-{api_version}/{name}.json'
+    _fmt_rel_path = "stats-api-{api_version}/{name}.json"
 
     @classmethod
     def get_name(cls):
-        return cls.__module__.split('.')[-1]
+        return cls.__module__.split(".")[-1]
 
     @classmethod
     def get_open_path(cls):
-        sub_path = cls._fmt_rel_path.format(name=cls.get_name(), api_version=BETA_STATS_API_VERSION)
+        sub_path = cls._fmt_rel_path.format(
+            name=cls.get_name(), api_version=BETA_STATS_API_VERSION
+        )
         return f"{CONFIGS_PATH}/statsapi/{sub_path}"
 
     @classmethod
     def read_doc_str(cls):
-        with open(cls.get_open_path(), 'r') as f:
+        with open(cls.get_open_path(), "r") as f:
             api_doc = f.read()
         return api_doc
 
@@ -60,7 +62,7 @@ class Parameter(Model):
     defaultValue: fields.Str()
     description: fields.Str()
     name: fields.Str()
-    paramType: fields.Choice(['path', 'query'])
+    paramType: fields.Choice(["path", "query"])
     required: fields.Bool()
     type: fields.Str()
     items: fields.Optional(fields.Nested(ItemType))
@@ -74,7 +76,7 @@ class Parameter(Model):
 class OperationModel(Model):
     consumes: fields.List(fields.Str)
     deprecated: fields.Str()
-    method: fields.Choice(['GET', 'POST'])
+    method: fields.Choice(["GET", "POST"])
     nickname: fields.Str()
     notes: fields.Str()
     parameters: fields.List(Parameter)
@@ -101,7 +103,7 @@ class APIModelBase(Model):
     path: fields.Str()
 
     class Meta:
-        tag = tags.Internal(tag='apis')
+        tag = tags.Internal(tag="apis")
 
 
 class EndpointAPIModel(APIModelBase):
@@ -126,6 +128,7 @@ class MLBStatsAPIEndpointModel(MLBStatsAPIModel, LogMixin):
 
     These methods return a StatsAPIFileObject which is endpoint/api aware, and can get, save, and load itself.
     """
+
     _methods = None
 
     apis: fields.List(EndpointAPIModel)
@@ -137,7 +140,7 @@ class MLBStatsAPIEndpointModel(MLBStatsAPIModel, LogMixin):
     resourcePath: fields.Str()
 
     class Meta:
-        tag = tags.Internal(tag='endpoint')
+        tag = tags.Internal(tag="endpoint")
 
     @property
     def _api_path_name_map(self):
@@ -148,19 +151,23 @@ class MLBStatsAPIEndpointModel(MLBStatsAPIModel, LogMixin):
         return {api.description: api for api in self.apis}
 
     def get_api_file_object(self, **kwargs):
-        path, name = kwargs['path'], kwargs['name']
+        path, name = kwargs["path"], kwargs["name"]
         api = self._api_path_name_map[path, name]
         operation = api.get_operations_map[name]
-        path_params, query_params = kwargs.get('path_params'), kwargs.get('query_params')
+        path_params, query_params = kwargs.get("path_params"), kwargs.get(
+            "query_params"
+        )
         return StatsAPIObject(
             endpoint=self,
             api=api,
             operation=operation,
             path_params=path_params,
-            query_params=query_params
+            query_params=query_params,
         )
 
     @property
     def methods(self):
-        assert self._methods is not None, 'please define methods for %s' % self.get_name()
+        assert self._methods is not None, (
+            "please define methods for %s" % self.get_name()
+        )
         return self._methods
