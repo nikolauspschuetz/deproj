@@ -58,15 +58,14 @@ Cards are represented as a list of info `boxes`, where each box has a list of `v
 Each of these elements needs a `script` to run against a `value` in [pyjq](https://pypi.org/project/pyjq/)
 to process the json data from the MLB Stats API.
 
-Boxes **kind** depending on if the _script_ returns a single value (`basic`) or a list (`frame`).
+Boxes are of a `basic` or `frame` **kind** depending on if the _script_ returns a single value or a list.
 
-Hydration rues for each kind of `value` is also defined in the config file. 
+Hydration rues for each kind of `value` are also defined in the config file. 
 
-> **_NOTE:_** Only brands `panini-donruss-baseball` and `topps-series-1-baseball` are configured for this demo.
 
 #### Adding a new brand
 
-To add a brand, add to the configs/cards for the year for both batter and pitcher.
+To add a brand, add to the **configs/cards** for the year for both batter and pitcher.
 
 #### Adding a new value
 
