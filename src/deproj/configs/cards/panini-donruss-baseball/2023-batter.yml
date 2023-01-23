@@ -1,0 +1,146 @@
+# this is not the layout of a panini donruss baseball 2023 pitcher's card
+# it's based off of a 2001 Fleer Triple Crown card for a hitter
+
+person:
+  hydrate: "currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)"
+
+images:
+  - url: https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:action:hero:current.jpg/v1/people/{person_id}/action/hero/current
+    side: front
+  - url: https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/q_auto:best/v1/people/{person_id}/headshot/67/current
+    side: back
+
+boxes:
+  - kind: basic
+    side: front
+    description: Name and Position Code over Team Name
+    values:
+      - script: (.primaryPosition.name | ascii_upcase) + "  " +  .primaryNumber
+        value: person
+  - kind: basic
+    side: front
+    description: Name and Position Code over Team Name
+    values:
+      - script: .fullName
+        value: person
+      - script: .currentTeam.name
+        value: person
+  - kind: basic
+    side: back
+    description: Name and Position Code over Team Name
+    values:
+      - script: .fullName + ",  " + .primaryPosition.abbreviation
+        value: person
+      - script: .currentTeam.name
+        value: person
+  - kind: basic
+    side: back
+    description: Born, Height, Weight and Sided-ness
+    values:
+      - name: Born
+        script: (.birthDate | strptime("%Y-%m-%d") | strftime("%-m/%-d/%y")) + ",  " + .birthCity + ",  " + .birthStateProvince
+        value: person
+      - name: Ht
+        script: .height
+        value: person
+      - name: Wt
+        script: .weight
+        value: person
+      - name: Bats
+        script: .batSide.code
+        value: person
+      - name: Throws
+        script: .pitchHand.code
+        value: person
+  - kind: frame
+    side: back
+    description: Yearly career stats
+    values:
+      - name: YEAR
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .season | tonumber ]'
+        value: person
+      - name: TEAM
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .team.teamName ]'
+        value: person
+      - name: G
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.gamesPlayed ]'
+        value: person
+      - name: AB
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.atBats ]'
+        value: person
+      - name: R
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.runs ]'
+        value: person
+      - name: H
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.hits ]'
+        value: person
+      - name: BB
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.baseOnBalls ]'
+        value: person
+      - name: 2B
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.doubles ]'
+        value: person
+      - name: 3B
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.triples ]'
+        value: person
+      - name: HR
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.homeRuns ]'
+        value: person
+      - name: RBI
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.rbi ]'
+        value: person
+      - name: SB
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.stolenBases ]'
+        value: person
+      - name: BA
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.avg ]'
+        value: person
+      - name: OBP
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.obp ]'
+        value: person
+      - name: SO
+        script: '[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.strikeOuts ]'
+        value: person
+  - kind: basic
+    side: back
+    description: Career Hitting Totals
+    values:
+      - name: G
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.gamesPlayed'
+        value: person
+      - name: AB
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.atBats'
+        value: person
+      - name: R
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.runs'
+        value: person
+      - name: H
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.hits'
+        value: person
+      - name: BB
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.baseOnBalls'
+        value: person
+      - name: 2B
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.doubles'
+        value: person
+      - name: 3B
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.triples'
+        value: person
+      - name: HR
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.homeRuns'
+        value: person
+      - name: RBI
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.rbi'
+        value: person
+      - name: SB
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.stolenBases'
+        value: person
+      - name: BA
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.avg'
+        value: person
+      - name: OBP
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.obp'
+        value: person
+      - name: SO
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "hitting") | .splits[] | .stat.strikeOuts'
+        value: person

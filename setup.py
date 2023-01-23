@@ -11,13 +11,15 @@ from src.deproj import __author__, __email__, __version__
 # with open('HISTORY.rst') as history_file:
 #     history = history_file.read()
 
+name = "deproj"
+
 install_requires = [
     'requests==2.28.2',
     "pyaml==21.10.1",
     'serde==0.9.0',
     "pytz==2022.7.1",
     "pyjq==2.6.0",
-    "python-dateutil==2.8.2"
+    "python-dateutil==2.8.2",
     "numpy==1.24.1",
     "pandas==1.5.3",
     "six==1.16.0",
@@ -25,13 +27,19 @@ install_requires = [
 
 setup_requirements = ['pytest-runner', ]
 
-test_requirements = [
-    'pytest>=3',
-    "mock==4.0.3"
-]
+with open("requirements_dev.txt", "r") as f:
+    test_requirements = [
+        x
+        for x in map(str.strip, f.readlines())
+        if len(x) and x[0] != "#"
+    ]
+
+extras_require = {
+    'test': test_requirements,
+}
 
 setup(
-    name='deproj',
+    name=name,
     author=__author__,
     author_email=__email__,
     python_requires='>=3.9',
@@ -47,27 +55,22 @@ setup(
     description="This project creates a baseball card, minus the graphic design.",
     entry_points={
         'console_scripts': [
-            'deproj=deproj.cli:main',
+            f'{name}={name}.main:main',
         ],
     },
     install_requires=install_requires,
+    setup_requires=setup_requirements,
+    tests_require=test_requirements,
+    extras_require=extras_require,
     license="Apache Software License 2.0",
     # long_description=readme + '\n\n' + history,
     include_package_data=True,
-    keywords='deproj',
-    # packages=find_packages(include=['deproj', 'deproj.*']),
-    setup_requires=setup_requirements,
+    keywords=name,
     test_suite='tests',
-    tests_require=test_requirements,
-    url='https://github.com/nikolauspschuetz/deproj',
+    url=f'https://github.com/nikolauspschuetz/{name}',
     version=__version__,
     zip_safe=False,
     packages=setuptools.find_packages("./src"),
-    package_data={"configs": [
-        'configs/deproj/**',
-        "configs/endpoint-statsapi.yaml"
-    ]},
-    package_dir={
-        "": "src"
-    }
+    package_dir={name: f'src/{name}'},
+    package_data={name: ['configs/**']},
 )

@@ -41,7 +41,6 @@ class StatsAPIObject(LogMixin):
         self.path_params, self.query_params = dict((path_params or {}).items()), dict((query_params or {}).items())
         self.path = resolve_path(self.api, self.operation, path_params, query_params)
         self.keyspace = f"{self.endpoint.get_name()}/api" + self.path
-        self.file_path = os.path.realpath(f"{self.base_file_path}/{self.keyspace}.json")
         self.url = self.base_url_path + self.path  # path should start with /
         # noinspection PyTypeChecker
         self.obj: typing.Union[list, dict] = None
@@ -53,6 +52,10 @@ class StatsAPIObject(LogMixin):
             api=self.api.description,
             path=self.path
         )
+
+    @property
+    def file_path(self):
+        return os.path.realpath(f"{self.base_file_path}/{self.keyspace}.json")
 
     def exists(self, ext: str):
         return os.path.isfile({
@@ -79,6 +82,10 @@ class StatsAPIObject(LogMixin):
             else:
                 self.log.error("%s.get failed %s" % (self, with_exception))
                 raise e
+        except AttributeError as ae:
+            self.log.error(ae)
+            print()
+            raise ae
 
     def load(self, ext='json.gz'):
         if ext == 'json':
@@ -100,16 +107,14 @@ class StatsAPIObject(LogMixin):
         return json.dumps(self.obj, indent=indent)
 
     def save(self):
-        if not os.path.isdir(os.path.dirname(self.file_path)):
-            os.makedirs(os.path.dirname(self.file_path))
+        os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
         with open(f"{self.file_path}", 'w') as f:
             f.write(json.dumps(self.obj))
         self.log.debug("saved %s to %s" % (self, self.file_path))
         # os.chmod(self.file_path, stat.S_IREAD)
 
     def gzip(self):
-        if not os.path.isdir(os.path.dirname(self.file_path)):
-            os.makedirs(os.path.dirname(self.file_path))
+        os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
         with gzip.open(self.gz_path, 'wb') as f:
             f.write(json.dumps(self.obj).encode('utf-8'))
         self.log.info("gzipped %s to %s" % (self, self.gz_path))

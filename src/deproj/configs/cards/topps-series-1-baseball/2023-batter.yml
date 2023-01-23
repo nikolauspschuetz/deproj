@@ -1,0 +1,106 @@
+person:
+  hydrate: "currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)"
+vsTeamTotal:
+  hydrate: 'stats(group=[{group}],type=[vsTeamTotal],opposingTeamId={opposingTeamId},season={season})'
+
+images:
+  - url: https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:action:hero:current.jpg/v1/people/{person_id}/action/hero/current
+    side: front
+  - url: https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/q_auto:best/v1/people/{person_id}/headshot/67/current
+    side: back
+
+
+boxes:
+  - kind: basic
+    side: front
+    description: Name and Position Code over Team Name
+    values:
+      - script: (.primaryPosition.name | ascii_upcase) + "  " +  .primaryNumber
+        value: person
+  - kind: basic
+    side: front
+    description: Name and Position Code over Team Name
+    values:
+      - script: .fullName
+        value: person
+      - script: .currentTeam.name
+        value: person
+  - kind: basic
+    side: back
+    description: Name and Position Code over Team Name
+    values:
+      - script: .fullName + ",  " + .primaryPosition.abbreviation
+        value: person
+      - script: .currentTeam.name
+        value: person
+  - kind: basic
+    side: back
+    description: Born, Height, Weight and Sided-ness
+    values:
+      - name: Born
+        script: (.birthDate | strptime("%Y-%m-%d") | strftime("%-m/%-d/%y")) + ",  " + .birthCity + ",  " + .birthStateProvince
+        value: person
+      - name: Ht
+        script: .height
+        value: person
+      - name: Wt
+        script: .weight
+        value: person
+      - name: Bats
+        script: .batSide.code
+        value: person
+      - name: Throws
+        script: .pitchHand.code
+        value: person
+  - kind: frame
+    side: back
+    description: Vs Team Pitching Totals
+    values:
+      - name: OPPONENT
+        script: '[ .[].splits[].opponent.name ]'
+        value: vsTeamTotal
+      - name: G
+        script: '[ .[].splits[].stat.gamesPlayed ]'
+        value: vsTeamTotal
+      - name: AB
+        script: '[ .[].splits[].stat.atBats ]'
+        value: vsTeamTotal
+      - name: H
+        script: '[ .[].splits[].stat.hits ]'
+        value: vsTeamTotal
+      - name: BB
+        script: '[ .[].splits[].stat.baseOnBalls ]'
+        value: vsTeamTotal
+      - name: 2B
+        script: '[ .[].splits[].stat.doubles ]'
+        value: vsTeamTotal
+      - name: 3B
+        script: '[ .[].splits[].stat.triples ]'
+        value: vsTeamTotal
+      - name: HR
+        script: '[ .[].splits[].stat.homeRuns ]'
+        value: vsTeamTotal
+      - name: SB
+        script: '[ .[].splits[].stat.stolenBases ]'
+        value: vsTeamTotal
+      - name: RBI
+        script: '[ .[].splits[].stat.rbi ]'
+        value: vsTeamTotal
+      - name: SO
+        script: '[ .[].splits[].stat.strikeOuts ]'
+        value: vsTeamTotal
+      - name: GO
+        script: '[ .[].splits[].stat.groundOuts ]'
+        value: vsTeamTotal
+      - name: AO
+        script: '[ .[].splits[].stat.airOuts ]'
+        value: vsTeamTotal
+      - name: AVG
+        script: '[ .[].splits[].stat.avg | tonumber ]'
+        value: vsTeamTotal
+      - name: BABIP
+        script: '[ .[].splits[].stat.babip | tonumber ]'
+        value: vsTeamTotal
+      - name: NP
+        script: '[ .[].splits[].stat.numberOfPitches ]'
+        value: vsTeamTotal

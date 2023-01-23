@@ -1,6 +1,9 @@
 .PHONY: clean clean-test clean-pyc clean-build docs help
 .DEFAULT_GOAL := help
 
+
+# ./src/deproj/__init__.py grep __version__ | cut -d ' ' -f3 | tr -d '"'
+
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
 
@@ -23,17 +26,19 @@ export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
+VERSION := $(shell grep __version__ ./src/deproj/__init__.py | cut -d ' ' -f3 | tr -d '"')
+
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
+clean: clean-build clean-pyc clean-test clean-out ## remove all build, test, coverage and Python artifacts
 
 clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
 	rm -fr .eggs/
 	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+	find . -name '*.egg' -exec rm -rf {} +
 
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
@@ -47,11 +52,14 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
+clean-out: ## remove output files
+	rm -fr .out/
+
 lint: ## check style with flake8
 	flake8 deproj tests
 
 test: ## run tests quickly with the default Python
-	python -m pytest -s -v tests/*
+	PYTHONPATH=./src python -m pytest -s -v tests
 
 test-all: ## run tests on every Python version with tox
 	tox
@@ -85,3 +93,10 @@ dist: clean ## builds source and wheel package
 
 install: clean ## install the package to the active Python's site-packages
 	python setup.py install
+
+
+docker-build:
+	./docker/build.sh $(VERSION)
+
+docker-build-test:
+	BUILD_TARGET=test REPOSITORY_NAME=deproj-test ./docker/build.sh $(VERSION)
