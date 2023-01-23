@@ -204,6 +204,10 @@ Additionally, the `deproj.utils.StatsAPIObject` wrapper is handy for getting, lo
 It is also handy for testing purposes!
 In prior work and exploration, this StatsAPI response wrapper helped to manage an S3 data lake of baseball data!
 
+I do like my StatsAPI configs a little more than the [StatsAPI Documentation.json](StatsAPI%20Documentation.json)
+because this also defines the parameters by param type (path, query) for each method!
+The python can then throw helpful errors about usage. 
+
 #### `v1/people`
 
 This endpoint, in combination with different hydration rules,
