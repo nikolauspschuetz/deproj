@@ -1,0 +1,153 @@
+# this is not the layout of a panini donruss baseball 2023 pitcher's card
+# it's based off of a 2001 Fleer Triple Crown card for Aaron Sele
+
+person:
+  hydrate: "currentTeam,team,stats(type=[yearByYear,yearByYearAdvanced,careerRegularSeason,careerAdvanced,availableStats](team(league)),leagueListId=mlb_hist)"
+
+images:
+  - url: https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:action:hero:current.jpg/v1/people/{person_id}/action/hero/current
+    side: front
+  - url: https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:67:current.png/q_auto:best/v1/people/{person_id}/headshot/67/current
+    side: back
+
+
+boxes:
+  - kind: basic
+    side: front
+    description: Name and Position Code over Team Name
+    values:
+      - script: (.primaryPosition.name | ascii_upcase) + "  " +  .primaryNumber
+        value: person
+  - kind: basic
+    side: front
+    description: Name and Position Code over Team Name
+    values:
+      - script: .fullName
+        value: person
+      - script: .currentTeam.name
+        value: person
+  - kind: basic
+    side: back
+    description: Name and Position Code over Team Name
+    values:
+      - script: .fullName + ",  " + .primaryPosition.abbreviation
+        value: person
+      - script: .currentTeam.name
+        value: person
+  - kind: basic
+    side: back
+    description: Born, Height, Weight and Sided-ness
+    values:
+      - name: Born
+        script: (.birthDate | strptime("%Y-%m-%d") | strftime("%-m/%-d/%y")) + ",  " + .birthCity + ",  " + .birthStateProvince
+        value: person
+      - name: Ht
+        script: .height
+        value: person
+      - name: Wt
+        script: .weight
+        value: person
+      - name: Bats
+        script: .batSide.code
+        value: person
+      - name: Throws
+        script: .pitchHand.code
+        value: person
+  - kind: frame
+    side: back
+    description: Yearly career stats
+    values:
+      - name: YEAR
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .season | tonumber ]'
+        value: person
+      - name: TEAM
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .team.teamName ]'
+        value: person
+      - name: W
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.wins ]'
+        value: person
+      - name: L
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.losses ]'
+        value: person
+      - name: PCT
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.winPercentage | tonumber ]'
+        value: person
+      - name: G
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.gamesPlayed ]'
+        value: person
+      - name: GS
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.gamesStarted ]'
+        value: person
+      - name: GG
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.completeGames ]'
+        value: person
+      - name: SHO
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.shutouts ]'
+        value: person
+      - name: SV
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.saves ]'
+        value: person
+      - name: IP
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.inningsPitched | tonumber ]'
+        value: person
+      - name: H
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.hits ]'
+        value: person
+      - name: BB
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.baseOnBalls ]'
+        value: person
+      - name: SO
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.strikeOuts ]'
+        value: person
+      - name: ERA
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.era | tonumber ]'
+        value: person
+      - name: BAA
+        script: '[ .stats[] | select(.type.displayName == "yearByYear" and .group.displayName == "pitching") | .splits[] | .stat.hits / (.stat.battersFaced - .stat.baseOnBalls) | tostring | .[:5] | tonumber ]'
+        value: person
+  - kind: basic
+    side: back
+    description: Career Pitching Totals
+    values:
+      - name: W
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.wins'
+        value: person
+      - name: L
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.losses'
+        value: person
+      - name: PCT
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.winPercentage | tonumber'
+        value: person
+      - name: G
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.gamesPlayed'
+        value: person
+      - name: GS
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.gamesStarted'
+        value: person
+      - name: GG
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.completeGames'
+        value: person
+      - name: SHO
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.shutouts'
+        value: person
+      - name: SV
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.saves'
+        value: person
+      - name: IP
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.inningsPitched | tonumber'
+        value: person
+      - name: H
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.hits'
+        value: person
+      - name: BB
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.baseOnBalls'
+        value: person
+      - name: SO
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.strikeOuts'
+        value: person
+      - name: ERA
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.era | tonumber'
+        value: person
+      - name: BAA
+        script: '.stats[] | select(.type.displayName == "career" and .group.displayName == "pitching") | .splits[] | .stat.hits / (.stat.battersFaced - .stat.baseOnBalls) | tostring | .[:5] | tonumber'
+        value: person
