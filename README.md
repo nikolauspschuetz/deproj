@@ -158,7 +158,7 @@ and for faster development and testing in shell with `jq` or python with `pyjq`.
 **For example,**
 the [panini-donruss-baseball/2023-batter](src/deproj/configs/cards/panini-donruss-baseball/2023-batter.yml) config
 queries for `BB` as `'[ .stats[] | select(.type.displayName == "yearByYear") | .splits[] | .stat.baseOnBalls ]'`
-from the `person` value:
+from the hydrated `person` value:
 
 ```shell
 export NAME=BB
@@ -198,9 +198,9 @@ EOF
 
 This is the only datasource used in the project.
 I was able to reuse a fair amount of prior work around the MLB Stats API in order to get started.
-For example, the deproj.statsapi.StatsAPI is generated from configs/statsapi files
+For example, the `deproj.statsapi.StatsAPI` is generated from **configs/statsapi** files
 and contains rules on all the endpoints and methods in the MLB Stats API.
-Additionally, the deproj.utils.StatsAPIObject wrapper is handy for getting, loading, and saving the api responses.
+Additionally, the `deproj.utils.StatsAPIObject` wrapper is handy for getting, loading, and saving the api responses.
 It is also handy for testing purposes!
 In prior work and exploration, this StatsAPI response wrapper helped to manage an S3 data lake of baseball data!
 
