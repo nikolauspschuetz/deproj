@@ -57,7 +57,6 @@ class TestCard(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        # basically tests that we have and cna use all of our
         from deproj.utils.log import set_log_level
 
         set_log_level("WARNING")
